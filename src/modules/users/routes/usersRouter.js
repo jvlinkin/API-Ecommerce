@@ -2,7 +2,7 @@ const {Router} = require('express')
 const usersRoutes = Router()
 
 usersRoutes.get('/',(req,res)=>{
-    res.json({message:'Rota de users funcionando.'})
+    res.json({message:'Chamar o método da controller.'})
 })
 
 

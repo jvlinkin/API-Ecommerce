@@ -2,7 +2,7 @@ const {Router} = require('express')
 const productsRoutes = Router()
 
 productsRoutes.get('/',(req,res)=>{
-    res.json({message:'Rota de products funcionando.'})
+    res.json({message:'Chamar o método da controller'})
 })
 
 
