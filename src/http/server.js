@@ -3,11 +3,13 @@ const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 4000
 const mongoose = require('mongoose')
+const {errors} = require('celebrate')
 const routes = require('./routes/routes')
 
 
 app.use(express.json())
 app.use(routes)
+app.use(errors())
 
 app.listen(PORT, async ()=>{
     await mongoose.connect(process.env.MONGO_CONNECTION).then(()=>{
