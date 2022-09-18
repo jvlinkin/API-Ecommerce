@@ -1,5 +1,8 @@
 const userModel = require('../models/User')
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
 
 class UserController {
 
@@ -31,6 +34,63 @@ class UserController {
         });
         
     }
+
+    async forgotPassword(req,res){
+
+        const {email} = req.body;
+
+        const user = await userModel.findOne({email})
+
+        if(!user){
+            return res.status(400).json({message:'Não foi encontrado nenhum usuário com esse e-mail cadastrado no sistema.'})
+        }
+
+        const token = crypto.randomBytes(20).toString('hex');
+        const now = new Date();
+        now.setHours(now.getHours()+1);
+
+        await userModel.findByIdAndUpdate(user.id,{
+          '$set':{
+            passwordResetToken: token,
+            passwordResetExpires: now
+          }
+        })
+
+
+
+        const transport = nodemailer.createTransport({
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+              user: process.env.NODEMAILER_USER,
+              pass: process.env.NODEMAILER_PASSWORD
+            }
+          });
+
+          const info = await transport.sendMail({
+            from: 'api-ecommerce.com.br', 
+            to: email,
+            subject: "Forgot password",
+            text: "Hello world?",
+            html: `<h2> Hi ${user.name}! </h2> <br> <h3>Need to reset your password? No problem,
+            use your secret code:</h3><br>
+            <p>${token}</p> <br>
+            <p>This token expires within 1 hour.</p>
+            <br><br>
+
+            <p>Equipe API</p>
+            <p>api-ecommerce.com.br</p><br>`,
+          }).then(()=>{
+            return res.status(250).json({message:'Email enviado com sucesso. Verique sua caixa de entrada.'})
+          }).catch((err)=>{
+            console.log('Erro eo enviar e-mail:',err)
+            return res.status(502).json({message:'Falha ao enviar e-mail de recuperação de senha. Tente novamente.'})
+          });
+
+
+    }
+
+    
 }
 
 module.exports = UserController

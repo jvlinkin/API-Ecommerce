@@ -19,6 +19,12 @@ usersRoutes.post('/cadastro',celebrate({
         
     })}),userController.create)
 
+    usersRoutes.post('/forgot-password',celebrate({
+        [Segments.BODY]:{
+            email:Joi.string().email().required(),
+        }
+    }),userController.forgotPassword)
+
 
 
 
