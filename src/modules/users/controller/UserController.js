@@ -88,7 +88,41 @@ class UserController {
           });
 
 
+
     }
+
+    async resetPassword(req,res){
+      const {token} = req.params
+      const {email, password} = req.body;
+
+        const user = await userModel.findOne({email})
+        .select('+passwordResetToken passwordResetExpires')
+
+        if(!user){
+            return res.status(400).json({message:'Email/token is incorrect. Please try again.'});
+        }
+
+        if(token != user.passwordResetToken){
+          return res.status(400).json({message:'Email/token is incorrect. Please try again.'});
+        }
+
+        const nowDate = new Date();
+
+        if(nowDate > user.passwordResetExpires){            
+          return res.status(400).json({message:'Email/token is incorrect. Please try again.'});
+        }
+
+        const salt = await bcrypt.genSalt(15)
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        user.password = hashedPassword;
+        await user.save();
+        return res.json({message: 'Password successfully changed'});
+
+
+    }
+
+
 
     
 }

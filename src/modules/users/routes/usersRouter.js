@@ -25,6 +25,16 @@ usersRoutes.post('/cadastro',celebrate({
         }
     }),userController.forgotPassword)
 
+    usersRoutes.post('/reset-password/:token',celebrate({
+        [Segments.PARAMS]:{
+            token: Joi.string().hex().required(),
+        },
+        [Segments.BODY]:{
+            email: Joi.string().email().required(),
+            password: Joi.string().required()
+        }
+    }),userController.resetPassword)
+
 
 
 
