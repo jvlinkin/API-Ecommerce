@@ -36,6 +36,14 @@ usersRoutes.post('/cadastro',celebrate({
     }),userController.resetPassword)
 
 
+    usersRoutes.post('/login',celebrate({
+
+        [Segments.BODY]:{
+            email: Joi.string().email().required(),
+            password: Joi.string().required()
+        }
+        },),userController.login)
+
 
 
 

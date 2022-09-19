@@ -2,6 +2,8 @@ const userModel = require('../models/User')
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken')
+const auth_jwt = require('../../../config/authjwt/authjwt');
 
 
 class UserController {
@@ -30,6 +32,7 @@ class UserController {
         await userData.save().then(()=>{
             return res.json({message:'Usuário cadastrado com sucesso.'})
         }).catch((erro)=>{
+          console.log(erro)
             return res.status(500).json({message:'Ocorreu um erro inseperado ao cadastrar o usuário. Tente novamente.'})
         });
         
@@ -123,6 +126,31 @@ class UserController {
     }
 
     async login(req,res){
+
+      const {email, password} = req.body
+
+      const user = await userModel.findOne({email})
+
+      if(!user){
+        return res.status(400).json({message:'Email/senha estão incorretos. Por favor, tente novamente.'});
+      }
+
+      const checkPassword = await bcrypt.compare(password, user.password)
+
+      if(checkPassword === false){
+        return res.status(400).json({message:'Email/senha estão incorretos. Por favor, tente novamente.'});
+      }
+
+      const secret = process.env.APP_SECRET
+
+      const token = jwt.sign({}, secret, {
+      subject:user.id,
+      expiresIn: auth_jwt.jwt.expiresIn
+      });
+
+      return res.status(200).json({message:'Logado com sucesso', token})
+
+
 
     }
 
