@@ -117,7 +117,7 @@ class UserController {
 
         user.password = hashedPassword;
         await user.save();
-        return res.json({message: 'Password successfully changed'});
+        return res.json({message: 'Senha alterada com sucesso!'});
 
 
     }
