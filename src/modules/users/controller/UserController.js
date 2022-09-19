@@ -99,17 +99,17 @@ class UserController {
         .select('+passwordResetToken passwordResetExpires')
 
         if(!user){
-            return res.status(400).json({message:'Email/token is incorrect. Please try again.'});
+            return res.status(400).json({message:'Email/token estão incorretos. Por favor, tente novamente.'});
         }
 
         if(token != user.passwordResetToken){
-          return res.status(400).json({message:'Email/token is incorrect. Please try again.'});
+          return res.status(400).json({message:'Email/token estão incorretos. Por favor, tente novamente.'});
         }
 
         const nowDate = new Date();
 
         if(nowDate > user.passwordResetExpires){            
-          return res.status(400).json({message:'Email/token is incorrect. Please try again.'});
+          return res.status(400).json({message:'Email/token estão incorretos. Por favor, tente novamente.'});
         }
 
         const salt = await bcrypt.genSalt(15)
@@ -121,6 +121,12 @@ class UserController {
 
 
     }
+
+    async login(req,res){
+
+    }
+
+    
 
 
 
