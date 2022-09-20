@@ -15,9 +15,17 @@ productsRoutes.post('/create-product/:id',celebrate({
         productQuantity: Joi.number().required(),
         productImage: Joi.string().required()
     }
-}),
+}),productController.create)
 
-productController.create)
+productsRoutes.post('/delete-product/:id/:product_id', celebrate({
+    [Segments.PARAMS]:{
+        id:Joi.required(),
+        product_id:Joi.required()
+    }
+
+    
+}) 
+,productController.deleteProduct)
 
 
 
