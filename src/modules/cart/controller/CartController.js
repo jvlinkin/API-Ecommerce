@@ -15,9 +15,10 @@ class CartController {
                 return res.status(400).json({message:'Usuário não cadastrado.'})        
             }
 
-            /*if (Object.keys(req.body.products).length === 0) {
+            if (Object.keys(req.body.products).length === 0) {
                 return res.status(400).json({message:'Não há nenhum produto para comprar.'})
-            }*/
+            }
+
 
             const createdCart = await cartModel.create({
                 username,
@@ -28,7 +29,7 @@ class CartController {
                 return res.status(200).json({message:'Pedido criado com sucesso.'})
             }).catch((erro)=>{
                 console.log(erro)
-                return res.status(400).json({message:'Ocorreu um erro ao salvar o pedido'})
+                return res.status(400).json({message:'Ocorreu um erro ao salvar o pedido. Por favor, tente novamente.'})
             })
             
 
