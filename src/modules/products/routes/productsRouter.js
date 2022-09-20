@@ -14,18 +14,29 @@ productsRoutes.post('/create-product/:id',celebrate({
         productPrice: Joi.number().required(),
         productQuantity: Joi.number().required(),
         productImage: Joi.string().required()
-    }
-}),productController.create)
+    }}),productController.create)
 
-productsRoutes.post('/delete-product/:id/:product_id', celebrate({
+
+productsRoutes.delete('/delete-product/:id/:product_id', celebrate({
     [Segments.PARAMS]:{
         id:Joi.required(),
         product_id:Joi.required()
-    }
+    }}),productController.deleteProduct)
 
-    
-}) 
-,productController.deleteProduct)
+
+    productsRoutes.patch('/edit-product/:id/:product_id', celebrate({
+    [Segments.PARAMS]:{
+        id:Joi.required(),
+        product_id:Joi.required()
+    },
+    [Segments.BODY]:{
+        productName: Joi.string().max(20).min(2),
+        productDescription: Joi.string().max(200).min(2),
+        productPrice: Joi.number(),
+        productQuantity: Joi.number(),
+        productImage: Joi.string()
+
+    }}),productController.editProduct)
 
 
 
