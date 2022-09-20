@@ -44,12 +44,23 @@ class CartController {
     }
 
     async listOrders(req,res){
-        
-    }
+        const {user_id} = req.params
 
-    async listOrder(req,res){
-        
+        const user = await userModel.findById({_id: user_id})
 
+        if(!user){
+            return res.status(400).json({message:'User não encontrado.'})
+        }
+
+        const orders = await cartModel.findOne({username: user_id})
+
+        if(!orders){
+            return res.status(400).json({message:'Não há nenhum pedido para este usuário.'})
+        }
+
+        return res.status(200).json({orders})
+
+        
     }
 
     
