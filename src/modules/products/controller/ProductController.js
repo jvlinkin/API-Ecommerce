@@ -100,15 +100,48 @@ class ProductController {
             
         }
 
+    }
+
+    async getAllProducts(req,res){
+
+        try {
+            const products = await productModel.find();
+
+            if(!products){
+                return res.status(200).json({message:'Nenhum produto foi encontrado.'})
+            }
+
+            return res.status(200).json({products})            
+
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({message:'Ocorreu um erro ao listar os produtos. Tente novamente.'})
+            
+        }
         
-
         
+    }
 
+    async getProduct(req,res){
 
+        const {product_id} = req.params
 
+        try {
+            const product = await productModel.findOne({_id: product_id});
 
+            if(!product){
+                return res.status(200).json({message:'Nenhum produto foi encontrado.'})
+            }
+
+            return res.status(200).json({product})            
+
+        } catch (error) {
+            console.log(error)
+            return res.status(400).json({message:'Ocorreu um erro ao listar o produto. Tente novamente.'})
+            
+        }
         
-
+        
     }
 
 

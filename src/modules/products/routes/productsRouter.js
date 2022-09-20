@@ -4,6 +4,8 @@ const ProductController = require('../controller/ProductController')
 const productsRoutes = Router()
 const productController = new ProductController()
 
+//Rotas ADMIN
+
 productsRoutes.post('/create-product/:id',celebrate({
     [Segments.PARAMS]:{
         id: Joi.string().required()
@@ -37,6 +39,15 @@ productsRoutes.delete('/delete-product/:id/:product_id', celebrate({
         productImage: Joi.string()
 
     }}),productController.editProduct)
+
+    productsRoutes.get('/all', productController.getAllProducts)
+
+    productsRoutes.get('/:product_id', celebrate({
+        [Segments.PARAMS]:{
+            product_id: Joi.required()
+        }
+    })
+     ,productController.getProduct)
 
 
 
