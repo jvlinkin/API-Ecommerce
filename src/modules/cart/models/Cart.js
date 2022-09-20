@@ -4,13 +4,15 @@ const Schema = new mongoose.Schema({
 
     products: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Product'
+        ref:'Product',
+        required: true
     }],
 
 
     username: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'User'
+        ref:'User',
+        required: true
     },
 
     address:{

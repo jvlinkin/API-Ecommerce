@@ -6,6 +6,6 @@ const cartRouter = require('../../modules/cart/routes/cartRouter')
 
 routes.use('/users', usersRoutes)
 routes.use('/products', productsRoutes)
-routes.use('/cart', cartRouter )
+routes.use('/carts', cartRouter )
 
 module.exports = routes
