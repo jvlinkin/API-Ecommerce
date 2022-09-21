@@ -19,7 +19,7 @@ app.listen(PORT, async ()=>{
     await mongoose.connect(process.env.MONGO_CONNECTION).then(()=>{
         console.log('Conectado no banco de dados.')
     }).catch((err)=>{
-        console.log('Falha ao se conectar no banco de dados.')
+        console.log('Falha ao se conectar no banco de dados.', err)
     });
     console.log(`Servidor rodando na porta ${PORT}.`)
 
