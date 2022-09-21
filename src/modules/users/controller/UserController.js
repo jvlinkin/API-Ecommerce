@@ -142,21 +142,24 @@ class UserController {
       }
 
       const secret = process.env.APP_SECRET
-
       const token = jwt.sign({}, secret, {
       subject:user.id,
       expiresIn: auth_jwt.jwt.expiresIn
       });
 
+      const now = new Date();      
+      now.setHours(now.getHours()+1);
+
+      await userModel.findByIdAndUpdate(user.id,{
+        '$set':{
+          accessToken: token,
+          accessTokenExpires: now
+        }
+      })
+
       return res.status(200).json({message:'Logado com sucesso', token})
 
-
-
     }
-
-    
-
-
 
     
 }

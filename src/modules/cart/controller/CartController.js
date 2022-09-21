@@ -6,11 +6,13 @@ const productModel = require ('../../products/models/Product')
 class CartController {
 
     async createOrder(req,res){
-        const {username} = req.params;
+    
+        const {user_id} = req.params;
         const {products, address, payment} = req.body;
 
+
         try {
-            const user = await userModel.findById({_id: username})
+            const user = await userModel.findById({_id: user_id})
             if(!user){
                 return res.status(400).json({message:'Usuário não cadastrado.'})        
             }
@@ -21,7 +23,7 @@ class CartController {
 
 
             const createdCart = await cartModel.create({
-                username,
+                username: user_id,
                 products,
                 address,
                 payment

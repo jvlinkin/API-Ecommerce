@@ -5,10 +5,11 @@ const { json } = require('express');
 class ProductController {
 
     async create(req,res){
-        const {id} = req.params;
+        const {user_id} = req.params;
         const {productName,productDescription, productPrice, productQuantity, productImage } = req.body
 
-        const user = await userModel.findOne({_id: id});
+        const user = await userModel.findOne({_id: user_id});
+        console.log(user)
 
         if(!user){
             return res.status(400).json({message:'Usuário não encontrado no sistema'})
@@ -41,9 +42,9 @@ class ProductController {
     }
 
     async deleteProduct(req,res){
-        const {id, product_id} = req.params;
+        const {user_id, product_id} = req.params;
 
-        const user = await userModel.findOne({_id: id});
+        const user = await userModel.findOne({_id: user_id});
 
         if(!user){
             return res.status(400).json({message:'Usuário não encontrado no sistema.'})
@@ -68,9 +69,9 @@ class ProductController {
 
     async editProduct(req,res){
         const productData = req.body 
-        const {id, product_id} = req.params;
+        const {user_id, product_id} = req.params;
 
-        const user = await userModel.findOne({_id: id});
+        const user = await userModel.findOne({_id: user_id});
 
         if(!user){
             return res.status(400).json({message:'Usuário não encontrado no sistema'})

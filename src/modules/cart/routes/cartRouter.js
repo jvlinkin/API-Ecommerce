@@ -4,9 +4,11 @@ const CartController = require('../controller/CartController')
 const cartRouter = Router()
 const cartController = new CartController()
 
-cartRouter.post('/create-order/:username', celebrate({
+const isAuthenticated = require('../../../middlewares/isAuthenticated')
+
+cartRouter.post('/create-order/:user_id',isAuthenticated ,celebrate({
     [Segments.PARAMS]:{
-        username: Joi.required()
+        user_id: Joi.string().min(24).max(24).required()
     },
     [Segments.BODY]:{
         products:Joi.required(),
@@ -15,7 +17,7 @@ cartRouter.post('/create-order/:username', celebrate({
     }
 }),cartController.createOrder)
 
-cartRouter.get('/list-orders/:user_id', celebrate({
+cartRouter.get('/list-orders/:user_id',isAuthenticated ,celebrate({
     [Segments.PARAMS]:{
         user_id: Joi.string().min(24).max(24).required()
     }

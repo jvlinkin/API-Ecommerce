@@ -1,11 +1,13 @@
 const {Router} = require('express')
 const usersRoutes = Router()
 const UserController = require('../controller/UserController')
+
 const {celebrate, Joi, Segments} = require('celebrate')
+
 
 const userController = new UserController()
 
-usersRoutes.post('/cadastro',celebrate({
+usersRoutes.post('/register',celebrate({
     [Segments.BODY]: Joi.object().keys({
         name: Joi.string().min(2).max(30).required(),
         age: Joi.number().min(18).required(),

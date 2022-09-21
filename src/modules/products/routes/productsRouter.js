@@ -3,12 +3,13 @@ const {celebrate, Joi, Segments} = require('celebrate')
 const ProductController = require('../controller/ProductController')
 const productsRoutes = Router()
 const productController = new ProductController()
+const isAuthenticated = require('../../../middlewares/isAuthenticated')
 
 //Rotas ADMIN
 
-productsRoutes.post('/create-product/:id',celebrate({
+productsRoutes.post('/create-product/:user_id',isAuthenticated,celebrate({
     [Segments.PARAMS]:{
-        id: Joi.string().required()
+        user_id: Joi.string().required()
     },
     [Segments.BODY]:{
         productName: Joi.string().max(20).min(2).required(),
@@ -19,16 +20,16 @@ productsRoutes.post('/create-product/:id',celebrate({
     }}),productController.create)
 
 
-productsRoutes.delete('/delete-product/:id/:product_id', celebrate({
+productsRoutes.delete('/delete-product/:user_id/:product_id',isAuthenticated ,celebrate({
     [Segments.PARAMS]:{
-        id:Joi.required(),
+        user_id:Joi.required(),
         product_id:Joi.required()
     }}),productController.deleteProduct)
 
 
-    productsRoutes.patch('/edit-product/:id/:product_id', celebrate({
+    productsRoutes.patch('/edit-product/:user_id/:product_id',isAuthenticated ,celebrate({
     [Segments.PARAMS]:{
-        id:Joi.required(),
+        user_id:Joi.required(),
         product_id:Joi.required()
     },
     [Segments.BODY]:{
@@ -40,10 +41,15 @@ productsRoutes.delete('/delete-product/:id/:product_id', celebrate({
 
     }}),productController.editProduct)
 
-    productsRoutes.get('/all', productController.getAllProducts)
-
-    productsRoutes.get('/:product_id', celebrate({
+    productsRoutes.get('/all/:user_id', celebrate({
         [Segments.PARAMS]:{
+            user_id:Joi.required()
+        }
+    }),isAuthenticated,productController.getAllProducts)
+
+    productsRoutes.get('/:user_id/:product_id',isAuthenticated ,celebrate({
+        [Segments.PARAMS]:{
+            user_id:Joi.required(),
             product_id: Joi.required()
         }
     })

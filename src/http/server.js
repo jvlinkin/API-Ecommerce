@@ -11,6 +11,10 @@ app.use(express.json())
 app.use(routes)
 app.use(errors())
 
+app.get('/',(req,res)=>{
+    return res.status(200).json({message:'Api is working.'})
+})
+
 app.listen(PORT, async ()=>{
     await mongoose.connect(process.env.MONGO_CONNECTION).then(()=>{
         console.log('Conectado no banco de dados.')

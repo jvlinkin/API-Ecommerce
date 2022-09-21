@@ -47,6 +47,16 @@ const Schema = new mongoose.Schema({
         select: false
     },
 
+    accessToken: {
+        type: String,
+        select: false
+    },
+
+    accessTokenExpires: {
+        type: Date,
+        select: false
+    },
+
 },
 {
     timestamps: true
